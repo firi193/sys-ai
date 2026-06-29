@@ -15,6 +15,7 @@ Update this file whenever the current phase, active feature, or implementation s
 - Feature spec 01: Design system — shadcn/ui initialized, all 7 UI primitives added (Button, Card, Dialog, Input, Tabs, Textarea, ScrollArea), lucide-react installed, lib/utils.ts with cn() created, globals.css updated with full dark theme token set.
 - Feature spec 02: Editor chrome — `components/editor/editor-navbar.tsx` (fixed h-12 navbar, sidebar toggle with PanelLeftOpen/PanelLeftClose, left/center/right sections, dark bg + bottom border) and `components/editor/project-sidebar.tsx` (floating overlay z-50, slides from left without pushing content, Projects header + close button, My Projects / Shared tabs with empty placeholders, full-width New Project button). Dialog pattern ready via existing shadcn Dialog component and globals.css tokens.
 - Feature spec 03: Auth — `proxy.ts` at project root wires Clerk middleware (all routes protected except public sign-in/sign-up paths from env vars); `ClerkProvider` wraps root layout with `@clerk/ui` dark theme and CSS variable overrides (no hardcoded colors); `app/sign-in/[[...sign-in]]/page.tsx` and `app/sign-up/[[...sign-up]]/page.tsx` use two-panel layout (left: logo + tagline + feature list, hidden on small screens; right: Clerk form); root `/` redirects authenticated users to `/editor` and unauthenticated to `/sign-in`; `UserButton` added to editor navbar right section. `@clerk/ui` installed.
+- Feature spec 04: Project dialogs — `hooks/use-project-dialogs.ts` manages dialog/form/loading state; `components/editor/project-dialogs-context.tsx` provides context to layout tree; `CreateProjectDialog` (name input + live slug preview), `RenameProjectDialog` (prefilled, auto-focus, Enter submits), `DeleteProjectDialog` (destructive confirm, no input) added to editor layout; sidebar updated with rename/delete actions on owned projects (hidden for shared), mobile backdrop scrim via `md:hidden` overlay; editor home screen (`app/editor/page.tsx`) shows heading, description, and New Project button wired to Create dialog. Mock project data only.
 
 ## In Progress
 
@@ -22,7 +23,7 @@ Update this file whenever the current phase, active feature, or implementation s
 
 ## Next Up
 
-- Feature spec 04 (TBD — next spec in context/feature-specs/).
+- Feature spec 05 (TBD — next spec in context/feature-specs/).
 
 ## Open Questions
 
