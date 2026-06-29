@@ -1,6 +1,7 @@
 We need the base chrome components that frame every editor screen - the top navbar and the left sidebar shell. These will be reused and extended in every chapter that follows.
 
 
+
 ### Editor Navbar
 
 Create `components/editor/editor-navbar.tsx`.
@@ -24,7 +25,7 @@ Requirements:
 - Sidebar should float above the editor canvas
 - opening it should not push page content
 - slides in from the left
-- accepts `isOpen` prop
+- accepts `isOpen` and `onClose` prop
 - header with `Projects` title + close button
 - shadcn `Tabs`:
     - My Projects
