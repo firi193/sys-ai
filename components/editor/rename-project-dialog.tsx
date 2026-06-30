@@ -14,11 +14,11 @@ import { Button } from "@/components/ui/button"
 import { useProjectDialogsContext } from "./project-dialogs-context"
 
 export function RenameProjectDialog() {
-  const { dialog, selectedProject, name, setName, loading, close } = useProjectDialogsContext()
+  const { dialog, selectedProject, name, setName, loading, close, handleRename } = useProjectDialogsContext()
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && name.trim()) {
-      close()
+      handleRename()
     }
   }
 
@@ -43,8 +43,8 @@ export function RenameProjectDialog() {
           <Button variant="outline" onClick={close} disabled={loading}>
             Cancel
           </Button>
-          <Button disabled={!name.trim() || loading} onClick={close}>
-            Rename
+          <Button disabled={!name.trim() || loading} onClick={handleRename}>
+            {loading ? "Renaming…" : "Rename"}
           </Button>
         </DialogFooter>
       </DialogContent>

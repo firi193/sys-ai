@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext } from "react"
-import type { ProjectItem, DialogType } from "@/hooks/use-project-dialogs"
+import type { ProjectItem, DialogType } from "@/hooks/use-project-actions"
 
 export interface ProjectDialogsContextValue {
   dialog: DialogType
@@ -9,11 +9,15 @@ export interface ProjectDialogsContextValue {
   name: string
   setName: (name: string) => void
   slug: string
+  roomId: string
   loading: boolean
   openCreate: () => void
   openRename: (project: ProjectItem) => void
   openDelete: (project: ProjectItem) => void
   close: () => void
+  handleCreate: () => Promise<void>
+  handleRename: () => Promise<void>
+  handleDelete: () => Promise<void>
 }
 
 export const ProjectDialogsContext = createContext<ProjectDialogsContextValue | null>(null)

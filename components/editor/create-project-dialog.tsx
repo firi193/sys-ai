@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { useProjectDialogsContext } from "./project-dialogs-context"
 
 export function CreateProjectDialog() {
-  const { dialog, name, setName, slug, loading, close } = useProjectDialogsContext()
+  const { dialog, name, setName, roomId, loading, close, handleCreate } = useProjectDialogsContext()
 
   return (
     <Dialog open={dialog === "create"} onOpenChange={(open) => { if (!open) close() }}>
@@ -27,19 +27,20 @@ export function CreateProjectDialog() {
             placeholder="Project name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter" && name.trim()) handleCreate() }}
             autoFocus
           />
           <p className="text-xs text-copy-faint">
-            Slug:{" "}
-            <span className="font-mono text-copy-muted">{slug || "—"}</span>
+            Room ID:{" "}
+            <span className="font-mono text-copy-muted">{roomId || "—"}</span>
           </p>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={close} disabled={loading}>
             Cancel
           </Button>
-          <Button disabled={!name.trim() || loading} onClick={close}>
-            Create
+          <Button disabled={!name.trim() || loading} onClick={handleCreate}>
+            {loading ? "Creating…" : "Create"}
           </Button>
         </DialogFooter>
       </DialogContent>

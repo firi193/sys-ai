@@ -5,16 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useProjectDialogsContext } from "./project-dialogs-context"
-import type { ProjectItem } from "@/hooks/use-project-dialogs"
-
-const MOCK_PROJECTS: ProjectItem[] = [
-  { id: "1", name: "E-commerce Platform", owned: true },
-  { id: "2", name: "Auth Microservice", owned: true },
-  { id: "3", name: "Event-Driven System", owned: false },
-]
-
-const MY_PROJECTS = MOCK_PROJECTS.filter((p) => p.owned)
-const SHARED_PROJECTS = MOCK_PROJECTS.filter((p) => !p.owned)
+import type { ProjectItem } from "@/hooks/use-project-actions"
 
 function ProjectListItem({ project }: { project: ProjectItem }) {
   const { openRename, openDelete } = useProjectDialogsContext()
@@ -51,9 +42,11 @@ function ProjectListItem({ project }: { project: ProjectItem }) {
 interface ProjectSidebarProps {
   isOpen: boolean
   onClose: () => void
+  ownedProjects: ProjectItem[]
+  sharedProjects: ProjectItem[]
 }
 
-export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
+export function ProjectSidebar({ isOpen, onClose, ownedProjects, sharedProjects }: ProjectSidebarProps) {
   const { openCreate } = useProjectDialogsContext()
 
   return (
@@ -94,14 +87,14 @@ export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
           </TabsList>
 
           <TabsContent value="my-projects" className="flex flex-1 flex-col overflow-hidden px-2 py-2">
-            {MY_PROJECTS.length === 0 ? (
+            {ownedProjects.length === 0 ? (
               <div className="flex flex-1 items-center justify-center">
                 <p className="text-xs text-copy-faint">No projects yet</p>
               </div>
             ) : (
               <ScrollArea className="flex-1">
                 <div className="flex flex-col gap-0.5 pr-1">
-                  {MY_PROJECTS.map((project) => (
+                  {ownedProjects.map((project) => (
                     <ProjectListItem key={project.id} project={project} />
                   ))}
                 </div>
@@ -110,14 +103,14 @@ export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
           </TabsContent>
 
           <TabsContent value="shared" className="flex flex-1 flex-col overflow-hidden px-2 py-2">
-            {SHARED_PROJECTS.length === 0 ? (
+            {sharedProjects.length === 0 ? (
               <div className="flex flex-1 items-center justify-center">
                 <p className="text-xs text-copy-faint">No shared projects</p>
               </div>
             ) : (
               <ScrollArea className="flex-1">
                 <div className="flex flex-col gap-0.5 pr-1">
-                  {SHARED_PROJECTS.map((project) => (
+                  {sharedProjects.map((project) => (
                     <ProjectListItem key={project.id} project={project} />
                   ))}
                 </div>

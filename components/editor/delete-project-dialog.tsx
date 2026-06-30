@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { useProjectDialogsContext } from "./project-dialogs-context"
 
 export function DeleteProjectDialog() {
-  const { dialog, selectedProject, loading, close } = useProjectDialogsContext()
+  const { dialog, selectedProject, loading, close, handleDelete } = useProjectDialogsContext()
 
   return (
     <Dialog open={dialog === "delete"} onOpenChange={(open) => { if (!open) close() }}>
@@ -29,8 +29,8 @@ export function DeleteProjectDialog() {
           <Button variant="outline" onClick={close} disabled={loading}>
             Cancel
           </Button>
-          <Button variant="destructive" disabled={loading} onClick={close}>
-            Delete
+          <Button variant="destructive" disabled={loading} onClick={handleDelete}>
+            {loading ? "Deleting…" : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

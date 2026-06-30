@@ -50,6 +50,6 @@ Do not build actual dialogs yet
 
 ### Check when done
 
-- new components complie without TypeScript errors
+- new components compile without TypeScript errors
 - no lint errors
 - dialog pattern is ready for future use
