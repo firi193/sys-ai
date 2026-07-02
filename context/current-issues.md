@@ -1,0 +1,1 @@
+in the canvas icon drap and drop, all the icons(rectangles, cylinder, pill, and all the others) drop on the canvas as rectangles

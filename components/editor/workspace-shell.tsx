@@ -10,6 +10,7 @@ import { CreateProjectDialog } from "./create-project-dialog"
 import { RenameProjectDialog } from "./rename-project-dialog"
 import { DeleteProjectDialog } from "./delete-project-dialog"
 import { ShareDialog } from "./share-dialog"
+import { CanvasRoom } from "./canvas-room"
 import { useProjectActions } from "@/hooks/use-project-actions"
 import { useShareCollaborators } from "@/hooks/use-share-collaborators"
 import type { ProjectItem } from "@/hooks/use-project-actions"
@@ -80,8 +81,8 @@ export function WorkspaceShell({ project, roomId, ownedProjects, sharedProjects,
             activeProjectId={roomId}
           />
 
-          <main className="flex flex-1 items-center justify-center bg-base">
-            <p className="text-sm text-copy-faint">Canvas coming soon</p>
+          <main className="relative flex-1 bg-base">
+            <CanvasRoom roomId={roomId} />
           </main>
 
           {isAISidebarOpen && (
