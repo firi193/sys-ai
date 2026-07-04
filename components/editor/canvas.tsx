@@ -7,14 +7,16 @@ import {
   Background,
   BackgroundVariant,
   ConnectionMode,
-  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   useReactFlow,
 } from "@xyflow/react"
 import { useLiveblocksFlow } from "@liveblocks/react-flow"
+import { useCanRedo, useCanUndo, useRedo, useUndo } from "@liveblocks/react"
 import { DEFAULT_NODE_COLOR, type CanvasEdge, type CanvasNode } from "@/types/canvas"
-import { CanvasNodeRenderer } from "./canvas-node"
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts"
+import { CanvasControlBar } from "./canvas-control-bar"
+import { CanvasNodeActionsProvider, CanvasNodeRenderer } from "./canvas-node"
 import { ShapePanel, SHAPE_DRAG_MIME, type ShapeDragPayload } from "./shape-panel"
 
 const NODE_TYPES = { canvasNode: CanvasNodeRenderer }
@@ -26,8 +28,16 @@ function CanvasFlow() {
       edges: { initial: [] },
       suspense: true,
     })
-  const { screenToFlowPosition } = useReactFlow<CanvasNode, CanvasEdge>()
+  const reactFlowInstance = useReactFlow<CanvasNode, CanvasEdge>()
+  const { screenToFlowPosition } = reactFlowInstance
   const nodeIdCounterRef = useRef(0)
+
+  const undo = useUndo()
+  const redo = useRedo()
+  const canUndo = useCanUndo()
+  const canRedo = useCanRedo()
+
+  useKeyboardShortcuts({ reactFlowInstance, undo, redo })
 
   const handleDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault()
@@ -65,22 +75,49 @@ function CanvasFlow() {
     [screenToFlowPosition, onNodesChange]
   )
 
+  const updateLabel = useCallback(
+    (id: string, label: string) => {
+      const node = nodes.find((candidate) => candidate.id === id)
+      if (!node) return
+      onNodesChange([{ id, type: "replace", item: { ...node, data: { ...node.data, label } } }])
+    },
+    [nodes, onNodesChange]
+  )
+
+  const updateColor = useCallback(
+    (id: string, color: string) => {
+      const node = nodes.find((candidate) => candidate.id === id)
+      if (!node) return
+      onNodesChange([{ id, type: "replace", item: { ...node, data: { ...node.data, color } } }])
+    },
+    [nodes, onNodesChange]
+  )
+
   return (
     <div className="relative h-full w-full" onDragOver={handleDragOver} onDrop={handleDrop}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onDelete={onDelete}
-        nodeTypes={NODE_TYPES}
-        connectionMode={ConnectionMode.Loose}
-        fitView
-      >
-        <Background variant={BackgroundVariant.Dots} />
-        <MiniMap />
-      </ReactFlow>
+      <CanvasNodeActionsProvider value={{ updateLabel, updateColor }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDelete={onDelete}
+          nodeTypes={NODE_TYPES}
+          connectionMode={ConnectionMode.Loose}
+          zoomOnDoubleClick={false}
+          fitView
+        >
+          <Background variant={BackgroundVariant.Dots} />
+        </ReactFlow>
+      </CanvasNodeActionsProvider>
+      <CanvasControlBar
+        reactFlowInstance={reactFlowInstance}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={undo}
+        onRedo={redo}
+      />
       <ShapePanel />
     </div>
   )

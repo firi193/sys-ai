@@ -1,1 +1,1 @@
-in the canvas icon drap and drop, all the icons(rectangles, cylinder, pill, and all the others) drop on the canvas as rectangles
+in the canvas icon drag and drop, the dropped icons can't be connected together, why is that

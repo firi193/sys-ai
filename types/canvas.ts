@@ -54,6 +54,8 @@ export interface CanvasNodeSize {
   height: number
 }
 
+export const MIN_NODE_SIZE: CanvasNodeSize = { width: 48, height: 40 }
+
 export interface NodeShapeDefinition {
   shape: CanvasNodeShape
   label: string
