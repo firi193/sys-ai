@@ -1,1 +1,0 @@
-in the canvas icon drag and drop, the dropped icons can't be connected together, why is that
