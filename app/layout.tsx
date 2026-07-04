@@ -26,6 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider
+      signInFallbackRedirectUrl="/editor"
+      signUpFallbackRedirectUrl="/editor"
       appearance={{
         theme: dark,
         variables: {

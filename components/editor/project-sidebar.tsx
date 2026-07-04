@@ -7,11 +7,17 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { useProjectDialogsContext } from "./project-dialogs-context"
 import type { ProjectItem } from "@/hooks/use-project-actions"
 
-function ProjectListItem({ project }: { project: ProjectItem }) {
+function ProjectListItem({ project, isActive }: { project: ProjectItem; isActive?: boolean }) {
   const { openRename, openDelete } = useProjectDialogsContext()
 
   return (
-    <div className="group flex items-center gap-1 rounded-lg px-2 py-1.5 hover:bg-elevated transition-colors">
+    <div
+      className={`group flex items-center gap-1 rounded-lg px-2 py-1.5 transition-colors ${
+        isActive
+          ? "bg-elevated border border-surface-border"
+          : "hover:bg-elevated"
+      }`}
+    >
       <span className="flex-1 truncate text-sm text-copy-primary">{project.name}</span>
       {project.owned && (
         <div className="flex shrink-0 items-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -44,9 +50,10 @@ interface ProjectSidebarProps {
   onClose: () => void
   ownedProjects: ProjectItem[]
   sharedProjects: ProjectItem[]
+  activeProjectId?: string
 }
 
-export function ProjectSidebar({ isOpen, onClose, ownedProjects, sharedProjects }: ProjectSidebarProps) {
+export function ProjectSidebar({ isOpen, onClose, ownedProjects, sharedProjects, activeProjectId }: ProjectSidebarProps) {
   const { openCreate } = useProjectDialogsContext()
 
   return (
@@ -95,7 +102,7 @@ export function ProjectSidebar({ isOpen, onClose, ownedProjects, sharedProjects 
               <ScrollArea className="flex-1">
                 <div className="flex flex-col gap-0.5 pr-1">
                   {ownedProjects.map((project) => (
-                    <ProjectListItem key={project.id} project={project} />
+                    <ProjectListItem key={project.id} project={project} isActive={project.id === activeProjectId} />
                   ))}
                 </div>
               </ScrollArea>
@@ -111,7 +118,7 @@ export function ProjectSidebar({ isOpen, onClose, ownedProjects, sharedProjects 
               <ScrollArea className="flex-1">
                 <div className="flex flex-col gap-0.5 pr-1">
                   {sharedProjects.map((project) => (
-                    <ProjectListItem key={project.id} project={project} />
+                    <ProjectListItem key={project.id} project={project} isActive={project.id === activeProjectId} />
                   ))}
                 </div>
               </ScrollArea>
