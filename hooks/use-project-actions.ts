@@ -101,7 +101,7 @@ export function useProjectActions() {
     if (!selectedProject) return
     setLoading(true)
     const activeProjectId =
-      typeof params?.projectId === "string" ? params.projectId : null
+      typeof params?.roomId === "string" ? params.roomId : null
     try {
       const res = await fetch(`/api/projects/${selectedProject.id}`, {
         method: "DELETE",

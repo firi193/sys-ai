@@ -3,6 +3,7 @@
 import { Component, type ReactNode } from "react"
 import { ClientSideSuspense, LiveblocksProvider, RoomProvider } from "@liveblocks/react"
 import { Canvas } from "./canvas"
+import type { CanvasSaveStatus } from "@/hooks/use-canvas-autosave"
 
 interface CanvasErrorBoundaryProps {
   children: ReactNode
@@ -35,13 +36,15 @@ class CanvasErrorBoundary extends Component<CanvasErrorBoundaryProps, CanvasErro
 
 interface CanvasRoomProps {
   roomId: string
+  onSaveStatusChange?: (status: CanvasSaveStatus) => void
+  children?: ReactNode
 }
 
-export function CanvasRoom({ roomId }: CanvasRoomProps) {
+export function CanvasRoom({ roomId, onSaveStatusChange, children }: CanvasRoomProps) {
   return (
     <CanvasErrorBoundary>
       <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
-        <RoomProvider id={roomId} initialPresence={{ cursor: null, isThinking: false }}>
+        <RoomProvider id={roomId} initialPresence={{ cursor: null, thinking: false }}>
           <ClientSideSuspense
             fallback={
               <div className="flex h-full w-full items-center justify-center">
@@ -49,8 +52,9 @@ export function CanvasRoom({ roomId }: CanvasRoomProps) {
               </div>
             }
           >
-            <Canvas />
+            <Canvas projectId={roomId} onSaveStatusChange={onSaveStatusChange} />
           </ClientSideSuspense>
+          {children}
         </RoomProvider>
       </LiveblocksProvider>
     </CanvasErrorBoundary>
