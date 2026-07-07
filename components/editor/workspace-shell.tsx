@@ -104,10 +104,14 @@ export function WorkspaceShell({ project, roomId, ownedProjects, sharedProjects,
           />
 
           <main className="relative flex-1 bg-base">
-            <CanvasRoom roomId={roomId} onSaveStatusChange={setSaveStatus} />
+            <CanvasRoom roomId={roomId} onSaveStatusChange={setSaveStatus}>
+              <AISidebar
+                isOpen={isAISidebarOpen}
+                onClose={() => setIsAISidebarOpen(false)}
+                roomId={roomId}
+              />
+            </CanvasRoom>
           </main>
-
-          <AISidebar isOpen={isAISidebarOpen} onClose={() => setIsAISidebarOpen(false)} />
         </div>
 
         <CreateProjectDialog />

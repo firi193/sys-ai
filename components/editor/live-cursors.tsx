@@ -1,5 +1,6 @@
 "use client"
 
+import { Loader2 } from "lucide-react"
 import { useOthers } from "@liveblocks/react"
 import { useReactFlow, useViewport } from "@xyflow/react"
 import type { CanvasEdge, CanvasNode } from "@/types/canvas"
@@ -22,6 +23,7 @@ export function LiveCursors() {
         const { x: left, y: top } = flowToScreenPosition(cursor)
         const color = other.info?.color ?? "var(--accent-primary)"
         const name = other.info?.name ?? "Anonymous"
+        const thinking = other.presence.thinking
 
         return (
           <div
@@ -39,9 +41,10 @@ export function LiveCursors() {
               />
             </svg>
             <span
-              className="absolute top-4 left-3 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white shadow-lg"
+              className="absolute top-4 left-3 flex items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-0.5 text-[11px] font-medium text-white shadow-lg"
               style={{ backgroundColor: color }}
             >
+              {thinking && <Loader2 className="h-2.5 w-2.5 shrink-0 animate-spin" />}
               {name}
             </span>
           </div>

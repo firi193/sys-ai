@@ -37,9 +37,10 @@ class CanvasErrorBoundary extends Component<CanvasErrorBoundaryProps, CanvasErro
 interface CanvasRoomProps {
   roomId: string
   onSaveStatusChange?: (status: CanvasSaveStatus) => void
+  children?: ReactNode
 }
 
-export function CanvasRoom({ roomId, onSaveStatusChange }: CanvasRoomProps) {
+export function CanvasRoom({ roomId, onSaveStatusChange, children }: CanvasRoomProps) {
   return (
     <CanvasErrorBoundary>
       <LiveblocksProvider authEndpoint="/api/liveblocks-auth">
@@ -53,6 +54,7 @@ export function CanvasRoom({ roomId, onSaveStatusChange }: CanvasRoomProps) {
           >
             <Canvas projectId={roomId} onSaveStatusChange={onSaveStatusChange} />
           </ClientSideSuspense>
+          {children}
         </RoomProvider>
       </LiveblocksProvider>
     </CanvasErrorBoundary>
